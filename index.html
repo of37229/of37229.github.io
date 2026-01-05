@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <title>DGL Radio</title>
+    <script src="radio.js" defer></script>
+    <link rel="icon" type="image/x-icon" href="radio.svg">
+    <link rel="stylesheet" href="radio.css" id="style">
+    <meta name="description" content="DGL Radio">
+  </head>
+  <body>
+    <main>
+        <canvas class= "secretradio-spt" id="frequencyCanvas"></canvas>
+        <button class="secretradio-btn" type="button" onclick="toggleRadio()"></button>
+        <p class="radiotext" id="radiotext" style="visibility: visible;"><span class="partial-blink">LOADING...</span></p>
+        <div>
+    </main>
+  </body>
+
+  <script>
+  window.addEventListener('resize', () => {
+    const fixedWidth = 30;
+    const fixedHeight = 500;
+    window.resizeTo(fixedWidth, fixedHeight);
+  });
+  </script>
+</html>
