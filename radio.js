@@ -295,7 +295,7 @@ async function loadBuffer(path) {
     return buf;
 }
 async function scheduleChunk() {
-    rtTrackDat = [];
+    rtTrackDat.length = 0;
     for (let i = blockInd; i < block.length; i++) {
         const track = block[i];
         const buffer = await loadBuffer(track.path);
@@ -327,6 +327,7 @@ function maintainScheduler() {
     refresh();
     scheduleChunk();
     loadTime = Date.now();
+    maintainTrackInfo();
     setTimeout(maintainScheduler, 1800000);
 }
 function getTrackFromBlocktime(timeIn){
@@ -348,7 +349,15 @@ function maintainTrackInfo() {
     if (!cursor) cursor = 0;
 
     //console.log(cursor);
+    if (!rtTrackDat[0]) {
+        console.log("rtTrackDat",rtTrackDat);
+        return;
+    }
     const currentTrack = getTrackFromBlocktime(cursor);
+    if (!currentTrack) {
+        console.log("cursor", cursor, "rtTrackDat", rtTrackDat);
+        return;
+    }
 
     rtRadioString = "<span class='partial-blink'>🔴 LIVE -</span>" + rotateString("now playing: " + currentTrack.name + " by " + currentTrack.author + " [" + segment + " MIX] - DGL Radio - ", radioTxtScrl);
     radioText.innerHTML = rtRadioString;
@@ -375,22 +384,23 @@ async function playMusic() {
     maintainTrackInfo();
 }
 
-async function pauseMusic() {
+function pauseMusic() {
     playing = false;
-    console.log("Playing: ", playing);
+    masterGain.gain.value = 0.01;
 }
 
 toggleVisibility();
 async function toggleRadio(){
     toggleVisibility();
-    if (!unlocked) {
+    if (unlocked == false) {
         await playMusic();
         drawWave();
-    } else if (audioCtx.state === "running") {
-        await audioCtx.suspend();
+    } else if (masterGain.gain.value > 0.01) {
+        pauseMusic();
+        radioText.innerHTML = "LOADING...";
     } else {
-        audioCtx.resume();
-        await playMusic();
+        //console.log("flag");
+        masterGain.gain.value = 1;
     }
 }
 
