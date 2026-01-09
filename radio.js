@@ -1,4 +1,4 @@
-const source = 'eyIxOS0yMDAwIjp7InBhdGgiOiJodHRwczovL2F1ZGlvLmp1a2Vob3N0LmNvLnVrL2JuY2Y0Y1RNdDU3cWtPUk50R29kb3FHc1BFNEtVaDVzLm1wMyIsImxlbmciOjIxMCwiYnkiOiJHb3JpbGxheiJ9LCIyQU0iOnsicGF0aCI6Imh0dHBzOi8vYXVkaW8uanVrZWhvc3QuY28udWsvS0dsSkhiMUxId1lOZXplSW1RenJZb3JUNUNHcGpUTlMubXAzIiwibGVuZyI6MTExLCJieSI6IkFRVk9MIn0sIjUwLy81MCI6eyJwYXRoIjoiaHR0cHM6Ly9hdWRpby5qdWtlaG9zdC5jby51ay9BYTZlc2Rsa0szT09ZRWdNWDdXQ0d2YmozQm5kMGxFci5tcDMiLCJsZW5nIjoyNDYsImJ5IjoiVmFudGFnZSJ9LCJCbGFjayBWZWx2ZXQiOnsicGF0aCI6Imh0dHBzOi8vYXVkaW8uanVrZWhvc3QuY28udWsvd2dkUDFoYlVMYm9DY0M4clhZVWxHREJrTjlXaGZHajIubXAzIiwibGVuZyI6MjQ4LCJieSI6IkluZmVjdGVkIE11c2hyb29tIn0sIkJyaWRnZXMiOnsicGF0aCI6Imh0dHBzOi8vYXVkaW8uanVrZWhvc3QuY28udWsvVEdoZHNtRFRGZXhuYllLaWNIVTRlZHM5c1Jic2JHVjcubXAzIiwibGVuZyI6MjIzLCJieSI6IktvcmVzbWEifSwiQ2FzY2FkZSI6eyJwYXRoIjoiaHR0cHM6Ly9hdWRpby5qdWtlaG9zdC5jby51ay9RWDFWUVN6TEFnUHFLdGpVQzRJNm83a3ZUTldIZDE1ZS5tcDMiLCJsZW5nIjoyNjUsImJ5IjoiS3ViYmkifSwiQ2hhcmlvdCI6eyJwYXRoIjoiaHR0cHM6Ly9hdWRpby5qdWtlaG9zdC5jby51ay84WW1pTU5pNDJleWMyWVhXbFJDMEx0TFZIN1VjeEc2eC5tcDMiLCJsZW5nIjoyMTMsImJ5IjoiUmlvdCJ9LCJDb2ZmZWUgQnJlYWsiOnsicGF0aCI6Imh0dHBzOi8vYXVkaW8uanVrZWhvc3QuY28udWsvVXpyUDRsYnBqbU5RVWdadTFYdmpSclB3SzEwbUNFWUoubXAzIiwibGVuZyI6MjgwLCJieSI6IlN0ZWZhbiBOaXhkb3JmIn0sIkRlbW9ucyBvZiBQYWluIjp7InBhdGgiOiJodHRwczovL2F1ZGlvLmp1a2Vob3N0LmNvLnVrL2ZPY1F1M2NYWmFEdXdndkNIOHZGcFRCY3hMMGtyTjdCLm1wMyIsImxlbmciOjQ2OCwiYnkiOiJJbmZlY3RlZCBNdXNocm9vbSJ9LCJEcmFnb25mcnVpdCBTYWxhZCI6eyJwYXRoIjoiaHR0cHM6Ly9hdWRpby5qdWtlaG9zdC5jby51ay9zdEV6aUt1UnZ2MWZJMXhTYlhqM2RNQkhGS0NmS3RjSi5tcDMiLCJsZW5nIjoyNjUsImJ5IjoiSm96dSJ9LCJGaWNrbGUgTWluZHMiOnsicGF0aCI6Imh0dHBzOi8vYXVkaW8uanVrZWhvc3QuY28udWsvb1BWYWlxbVdSRWJHZWkwejZ3WThuSVBGdnVBdU9Ic1YubXAzIiwibGVuZyI6MjI3LCJieSI6IkJpc2hvcCBOZWhydSJ9LCJNZWlrYXJ1emEiOnsicGF0aCI6Imh0dHBzOi8vYXVkaW8uanVrZWhvc3QuY28udWsvcTRoWTdGRXhPYmE4Qnk4R21LbVBIdU11YWU1MGJNajIubXAzIiwibGVuZyI6MjI4LCJieSI6Ik5hbmFob3NoaSBLYW5nZW5nYWt1ZGFuIn0sIlBhbG0gVHJlZXMiOnsicGF0aCI6Imh0dHBzOi8vYXVkaW8uanVrZWhvc3QuY28udWsvTUFURTZBYlVJUkp2SUpuYzhMMzdINGVLeVVnSUs1S3YubXAzIiwibGVuZyI6MjIyLCJieSI6IkVocmxpbmcifSwiUHJhZGEgTWl4IEZlcnJhcmkgSG9yc2VzIjp7InBhdGgiOiJodHRwczovL2F1ZGlvLmp1a2Vob3N0LmNvLnVrLzVWeWh1U1FMTFozR3RxNVd0SHdTNURqQXlza3hZZ3c4Lm1wMyIsImxlbmciOjI0NiwiYnkiOiJjYXNz9iwgUkFZRSAmIEQtQmxvY2sgRXVyb3BlIn0sIlB1cnAiOnsicGF0aCI6Imh0dHBzOi8vYXVkaW8uanVrZWhvc3QuY28udWsvN3N4U1lDanhUMW5OUVdSV1I4bEVtc1A1b09LQ2VVV0wiLCJsZW5nIjoyMTEsImJ5Ijoib2xpdmVyIn0sIlJhaW4gRHJvcHMiOnsicGF0aCI6Imh0dHBzOi8vYXVkaW8uanVrZWhvc3QuY28udWsvdEVFZXphYlJCbm5adEFLVEdKUWNWQ1VOSXNKUmltRzIiLCJsZW5nIjozMzgsImJ5IjoiU2xpZ2h0In0sIlJvY2sgdGhlIEhvdXNlIjp7InBhdGgiOiJodHRwczovL2F1ZGlvLmp1a2Vob3N0LmNvLnVrL3lFcjM0eEdkQUlWOVFkNVBQU0FaWmxPbXY2SmRFWEpVLm1wMyIsImxlbmciOjI0OSwiYnkiOiJHb3JpbGxheiJ9LCJTZWNvbmQgSGVhdmVuIjp7InBhdGgiOiJodHRwczovL2F1ZGlvLmp1a2Vob3N0LmNvLnVrL2JXN05ZYWR6V1NMZUVmVk40Y0R2djRva3BKanZxVHBvLm1wMyIsImxlbmciOjIyOCwiYnkiOiJSeXUifSwiU3dpbW1pbmcgVHJlZXMiOnsicGF0aCI6Imh0dHBzOi8vYXVkaW8uanVrZWhvc3QuY28udWsvU1FDcXhVdkdoMUVUVnJkSXVkMHhxb3hNTjRXRWpkOGQubXAzIiwibGVuZyI6MjI1LCJieSI6IlZhbGlkIn0sIlRoZSBMZXQgT3V0Ijp7InBhdGgiOiJodHRwczovL2F1ZGlvLmp1a2Vob3N0LmNvLnVrLzJMdWFqMnQ3eVN5R29ic3hnMW5EakxhNnlTdlFYU1prIiwibGVuZyI6MjM1LCJieSI6IkppZGVubmEgZnQgUXVhdm8ifSwiV2hhdCBOb3ciOnsicGF0aCI6Imh0dHBzOi8vYXVkaW8uanVrZWhvc3QuY28udWsvZDlxVmFvMUhLRjc0aXZ5MW9abjRKUHI1SGczUmM2dzUubXAzIiwibGVuZyI6MzQwLCJieSI6IkRKIFNtb2tleSwgTG91ZCBMb3JkLCBhbmQgU291ZGllcmUifSwiWWUiOnsicGF0aCI6Imh0dHBzOi8vYXVkaW8uanVrZWhvc3QuY28udWsvVUFRcXRGbGo2R2YwV0Zua2tPRTNEWXZFenc1cFRXTUgubXAzIiwibGVuZyI6NzMsImJ5IjoiRXBoaXhhIn19';
+const source = 'eyIxMCBGT09UIFRBTEwiOnsicGF0aCI6Imh0dHBzOi8vYXVkaW8uanVrZWhvc3QuY28udWsvV0tEdHZPejhHcHQwaHVCN3d3NUNkdGZSRU5EOVpMVWcubXAzIiwibGVuZyI6MTY2LCJieSI6IkJMRExWRCAmIExpbCBEYXJraWUifSwiMTktMjAwMCI6eyJwYXRoIjoiaHR0cHM6Ly9hdWRpby5qdWtlaG9zdC5jby51ay9ibmNmNGNUTXQ1N3FrT1JOdEdvZG9xR3NQRTRLVWg1cy5tcDMiLCJsZW5nIjoyMTAsImJ5IjoiR29yaWxsYXoifSwiMkFNIjp7InBhdGgiOiJodHRwczovL2F1ZGlvLmp1a2Vob3N0LmNvLnVrL0tHbEpIYjFMSHdZTmV6ZUltUXpyWW9yVDVDR3BqVE5TLm1wMyIsImxlbmciOjExMSwiYnkiOiJBUVZPTCJ9LCI1MC8vNTAiOnsicGF0aCI6Imh0dHBzOi8vYXVkaW8uanVrZWhvc3QuY28udWsvQWE2ZXNkbGtLM09PWUVnTVg3V0NHdmJqM0JuZDBsRXIubXAzIiwibGVuZyI6MjQ2LCJieSI6IlZhbnRhZ2UifSwiQmxhY2sgVmVsdmV0Ijp7InBhdGgiOiJodHRwczovL2F1ZGlvLmp1a2Vob3N0LmNvLnVrL3dnZFAxaGJVTGJvQ2NDOHJYWVVsR0RCa045V2hmR2oyLm1wMyIsImxlbmciOjI0OCwiYnkiOiJJbmZlY3RlZCBNdXNocm9vbSJ9LCJCcmFpbiBQb3dlciB0cHogSm8tb29vb29vb29vb29vdmVyaGVhdCBSZW1peCI6eyJwYXRoIjoiaHR0cHM6Ly9hdWRpby5qdWtlaG9zdC5jby51ay9hVjJIdTFaRzNtUjA5WFVNUlVFOFB3S2ZyNW1teXpDaS5tcDMiLCJsZW5nIjoxOTQsImJ5IjoiTk9NQSJ9LCJCcmlkZ2VzIjp7InBhdGgiOiJodHRwczovL2F1ZGlvLmp1a2Vob3N0LmNvLnVrL1RHaGRzbURURmV4bmJZS2ljSFU0ZWRzOXNSYnNiR1Y3Lm1wMyIsImxlbmciOjIyMywiYnkiOiJLb3Jlc21hIn0sIkNhc2NhZGUiOnsicGF0aCI6Imh0dHBzOi8vYXVkaW8uanVrZWhvc3QuY28udWsvUVgxVlFTekxBZ1BxS3RqVUM0STZvN2t2VE5XSGQxNWUubXAzIiwibGVuZyI6MjY1LCJieSI6Ikt1YmJpIn0sIkNoYXJpb3QiOnsicGF0aCI6Imh0dHBzOi8vYXVkaW8uanVrZWhvc3QuY28udWsvOFltaU1OaTQyZXljMllYV2xSQzBMdExWSDdVY3hHNngubXAzIiwibGVuZyI6MjEzLCJieSI6IlJpb3QifSwiQ29mZmVlIEJyZWFrIjp7InBhdGgiOiJodHRwczovL2F1ZGlvLmp1a2Vob3N0LmNvLnVrL1V6clA0bGJwam1OUVVnWnUxWHZqUnJQd0sxMG1DRVlKLm1wMyIsImxlbmciOjI4MCwiYnkiOiJTdGVmYW4gTml4ZG9yZiJ9LCJEQU5HRVJPT09PVVMgSlVOR0xFIjp7InBhdGgiOiJodHRwczovL2F1ZGlvLmp1a2Vob3N0LmNvLnVrL2diUTNuZ09tZVVNQzcxVnRNMzFheE5jalMxVDJMMk1FLm1wMyIsImxlbmciOjI0MCwiYnkiOiJMYXVyIn0sIkRlbW9ucyBvZiBQYWluIjp7InBhdGgiOiJodHRwczovL2F1ZGlvLmp1a2Vob3N0LmNvLnVrL2ZPY1F1M2NYWmFEdXdndkNIOHZGcFRCY3hMMGtyTjdCLm1wMyIsImxlbmciOjQ2OCwiYnkiOiJJbmZlY3RlZCBNdXNocm9vbSJ9LCJET0dMQU5EIjp7InBhdGgiOiJodHRwczovL2F1ZGlvLmp1a2Vob3N0LmNvLnVrL1NwbkxxeWQzR1ZrU0xJMHdQemRaREdUd1gyUlpWMmdWLm1wMyIsImxlbmciOjE4NSwiYnkiOiJJbmZlY3RlZCBNdXNocm9vbSJ9LCJEcmFnb25mcnVpdCBTYWxhZCI6eyJwYXRoIjoiaHR0cHM6Ly9hdWRpby5qdWtlaG9zdC5jby51ay9zdEV6aUt1UnZ2MWZJMXhTYlhqM2RNQkhGS0NmS3RjSi5tcDMiLCJsZW5nIjoyNjUsImJ5IjoiSm96dSJ9LCJEcmlmdCBOaWdodCI6eyJwYXRoIjoiaHR0cHM6Ly9hdWRpby5qdWtlaG9zdC5jby51ay9QalBqOGRTZmRnSXVhTDNZb2hOaDhiemczWHZsVVNRSy5tcDMiLCJsZW5nIjoxNjgsImJ5IjoiRk9SR09UVEVOQUdFIn0sIkZpY2tsZSBNaW5kcyI6eyJwYXRoIjoiaHR0cHM6Ly9hdWRpby5qdWtlaG9zdC5jby51ay9vUFZhaXFtV1JFYkdlaTB6NndZOG5JUEZ2dUF1T0hzVi5tcDMiLCJsZW5nIjoyMjcsImJ5IjoiQmlzaG9wIE5laHJ1In0sIkkgTmVlZCBhIFllc3RlcmRheSI6eyJwYXRoIjoiaHR0cHM6Ly9hdWRpby5qdWtlaG9zdC5jby51ay9ZV1pNcTgzeXJQRGVrRUI1Z05nNmtkWlF2b2xia3hPei5tcDMiLCJsZW5nIjoxNDYsImJ5IjoiREogWXVuZyBWYW1wIn0sIkltcHJpbnRpbmciOnsicGF0aCI6Imh0dHBzOi8vYXVkaW8uanVrZWhvc3QuY28udWsvdkRWWWhFZmt6dngwVGUwWUZ1MkFFeGdOMkRGV0FHTzAubXAzIiwibGVuZyI6MTE0LCJieSI6IkxhdXIifSwiTE9PSyBBVCBNRSBOT1ciOnsicGF0aCI6Imh0dHBzOi8vYXVkaW8uanVrZWhvc3QuY28udWsvbksyb0Z0anJ3NmxPeFcxd0Jwa1VYSEZycnVKNEdOdVQubXAzIiwibGVuZyI6MTYzLCJieSI6IkRKIFl1bmcgVmFtcCBhbmQgSkVXM0xaIn0sIk1laWthcnV6YSI6eyJwYXRoIjoiaHR0cHM6Ly9hdWRpby5qdWtlaG9zdC5jby51ay9xNGhZN0ZFeE9iYThCeThHbUttUEh1TXVhZTUwYk1qMi5tcDMiLCJsZW5nIjoyMjgsImJ5IjoiTmFuYWhvc2hpIEthbmdlbmdha3VkYW4ifSwiUGFsbSBUcmVlcyI6eyJwYXRoIjoiaHR0cHM6Ly9hdWRpby5qdWtlaG9zdC5jby51ay9NQVRFNkFiVUlSSnZJSm5jOEwzN0g0ZUt5VWdJSzVLdi5tcDMiLCJsZW5nIjoyMjIsImJ5IjoiRWhybGluZyJ9LCJQcmFkYSBNaXggRmVycmFyaSBIb3JzZXMiOnsicGF0aCI6Imh0dHBzOi8vYXVkaW8uanVrZWhvc3QuY28udWsvNVZ5aHVTUUxMWjNHdHE1V3RId1M1RGpBeXNreFlndzgubXAzIiwibGVuZyI6MjQ2LCJieSI6ImNhc3P2LCBSQVlFICYgRC1CbG9jayBFdXJvcGUifSwiUHVycCI6eyJwYXRoIjoiaHR0cHM6Ly9hdWRpby5qdWtlaG9zdC5jby51ay83c3hTWUNqeFQxbk5RV1JXUjhsRW1zUDVvT0tDZVVXTC5tcDMiLCJsZW5nIjoyMTEsImJ5Ijoib2xpdmVyIn0sIlJhaW4gRHJvcHMiOnsicGF0aCI6Imh0dHBzOi8vYXVkaW8uanVrZWhvc3QuY28udWsvdEVFZXphYlJCbm5adEFLVEdKUWNWQ1VOSXNKUmltRzIubXAzIiwibGVuZyI6MzM4LCJieSI6IlNsaWdodCJ9LCJSb2NrIHRoZSBIb3VzZSI6eyJwYXRoIjoiaHR0cHM6Ly9hdWRpby5qdWtlaG9zdC5jby51ay95RXIzNHhHZEFJVjlRZDVQUFNBWlpsT212NkpkRVhKVS5tcDMiLCJsZW5nIjoyNDksImJ5IjoiR29yaWxsYXoifSwiU2Vjb25kIEhlYXZlbiI6eyJwYXRoIjoiaHR0cHM6Ly9hdWRpby5qdWtlaG9zdC5jby51ay9iVzdOWWFkeldTTGVFZlZONGNEdnY0b2twSmp2cVRwby5tcDMiLCJsZW5nIjoyMjgsImJ5IjoiUnl1In0sIlNsb3BweSBXYWxrZXIiOnsicGF0aCI6Imh0dHBzOi8vYXVkaW8uanVrZWhvc3QuY28udWsvVlc0aHRhUnhyRFRQck1LbFZUWU1Ib2YyUTdqMkNmdkUubXAzIiwibGVuZyI6MTk3LCJieSI6Ikt5bGUgR2FibGVyIGFuZCBKb25ueSBUcmVuZ3JvdmUifSwiU3dpbW1pbmcgVHJlZXMiOnsicGF0aCI6Imh0dHBzOi8vYXVkaW8uanVrZWhvc3QuY28udWsvU1FDcXhVdkdoMUVUVnJkSXVkMHhxb3hNTjRXRWpkOGQubXAzIiwibGVuZyI6MjI1LCJieSI6IlZhbGlkIn0sIlRoZSBMZXQgT3V0Ijp7InBhdGgiOiJodHRwczovL2F1ZGlvLmp1a2Vob3N0LmNvLnVrLzJMdWFqMnQ3eVN5R29ic3hnMW5EakxhNnlTdlFYU1prLm1wMyIsImxlbmciOjIzNSwiYnkiOiJKaWRlbm5hIGZ0IFF1YXZvIn0sIlRoaXMgaXMgdGhlIERlYWQsIGFuZCBJIFJlYWNoZWQgdGhlIERlYXRobGVzcyI6eyJwYXRoIjoiaHR0cHM6Ly9hdWRpby5qdWtlaG9zdC5jby51ay95aEt3VjdmWmdWVm5EaG5QbW8yZ2JMZDN0Mk95UzJTeC5tcDMiLCJsZW5nIjoxOTcsImJ5IjoiQkxBTktGSUVMRCJ9LCJXaGF0IE5vdyI6eyJwYXRoIjoiaHR0cHM6Ly9hdWRpby5qdWtlaG9zdC5jby51ay9kOXFWYW8xSEtGNzRpdnkxb1puNEpQcjVIZzNSYzZ3NS5tcDMiLCJsZW5nIjozNDAsImJ5IjoiREogU21va2V5LCBMb3VkIExvcmQsIGFuZCBTb3VkaWVyZSJ9LCJZZSI6eyJwYXRoIjoiaHR0cHM6Ly9hdWRpby5qdWtlaG9zdC5jby51ay9VQVFxdEZsajZHZjBXRm5ra09FM0RZdkV6dzVwVFdNSC5tcDMiLCJsZW5nIjo3MywiYnkiOiJFcGhpeGEifX0=';
 
 const radioData = JSON.parse(atob(source));
 const Segments = Object.freeze({
@@ -13,16 +13,20 @@ const Segments = Object.freeze({
 
 const SegmentLists = Object.freeze({
     "LATENIGHT": [
-        "Cascade",
+        "Brain Power tpz Jo-ooooooooooooverheat Remix",
         "Coffee Break",
         "Chariot",
+        "DANGEROOOOUS JUNGLE",
         "Demons of Pain",
+        "Imprinting",
         "Second Heaven",
-        "The Let Out"
+        "The Let Out",
+        "This is the Dead, and I Reached the Deathless"
     ],
     "OWL": [
         "2AM",
         "Bridges",
+        "Drift Night",
         "Purp",
         "What Now",
         "Ye"
@@ -30,49 +34,69 @@ const SegmentLists = Object.freeze({
     "EARLYBIRD": [
         "Black Velvet",
         "Fickle Minds",
-        "Purp"
+        "I need a Yesterday",
+        "LOOK AT ME NOW",
+        "Sloppy Walker"
     ],
     "MORNING": [
         "5050",
         "Black Velvet",
+        "Demons of Pain",
         "Cascade",
+        "DOGLAND",
         "Fickle Minds",
-        "Palm Trees"
+        "Palm Trees",
+        "Rock the House",
+        "Sloppy Walker",
+        "Swimming Trees",
     ],
     "LUNCH": [
-        "50//50",
+        "10 FOOT TALL",
+        "19-2000",
         "Black Velvet",
         "Coffee Break",
+        "DOGLAND",
         "Dragonfruit Salad",
         "Meikaruza",
         "Rock the House",
-        "Swimming Trees"
+        "Swimming Trees",
+        "The Let Out",
+        "This is the Dead, and I Reached the Deathless",
+        "What now"
     ],
     "WORK": [
-        "19-2000",
+        "50//50",
         "Black Velvet",
         "Cascade",
         "Demons of Pain",
-        "Prada Mix Ferrari Horses",
+        "Drift Night",
+        "I Need a Yesterday",
+        "LOOK AT ME NOW",
+        "Palm Trees",
         "Purp",
         "Rain Drops",
-        "Rock the House",
-        "Swimming Trees",
-        "The Let Out",
-        "What Now"
+        "Sloppy Walker"
     ],
     "VARIETY": [
+        "10 FOOT TALL",
         "19-2000",
         "2AM",
         "50//50",
+        "Brain Power tpz Jo-ooooooooooooverheat Remix",
         "Bridges",
         "Black Velvet",
         "Cascade",
         "Chariot",
         "Coffee Break",
+        "DANGEROOOOUS JUNGLE",
         "Demons of Pain",
+        "DOGLAND",
         "Dragonfruit Salad",
+        "Drift Night",
         "Fickle Minds",
+        "I Need a Yesterday",
+        "Imprinting",
+        "LOOK AT ME NOW",
         "Meikaruza",
         "Palm Trees",
         "Prada Mix Ferrari Horses",
@@ -80,8 +104,10 @@ const SegmentLists = Object.freeze({
         "Rain Drops",
         "Rock the House",
         "Second Heaven",
+        "Sloppy Walker",
         "Swimming Trees",
         "The Let Out",
+        "This is the Dead, and I Reached the Deathless",
         "What Now",
         "Ye"
     ]
@@ -105,6 +131,7 @@ let block;          // contains shuffled track array
 
 let playing;
 let ended;
+let buttonClick;
 
 const testLengs = [1.6, 2.7, 3.8, 4.9, 5.0];
 //const audioPlayer = document.getElementById("music"); --OLD
@@ -333,13 +360,21 @@ function maintainScheduler() {
 function getTrackFromBlocktime(timeIn){
     if (!rtTrackDat || rtTrackDat == []) return block[0];
     let selected = rtTrackDat[0];
+    let timeInOffset = timeIn;
+
+    if (loadTime > buttonClick + 1000) {
+        timeInOffset += rtTrackDat[0].tts;
+        //console.log("time in:", timeIn, "new: ", timeInOffset, rtTrackDat);
+    }
+
     for (i = 0; i < rtTrackDat.length; i++){
-        if (rtTrackDat[i].tts < timeIn) {
+        if (rtTrackDat[i].tts < timeInOffset) {
             selected = rtTrackDat[i];
             //break;
         }
-        if (i == rtTrackDat.length) console.log("time in:", timeIn, "trackData[0]:", rtTrackDat[0]);
+        //if (i == rtTrackDat.length) console.log("time in:", timeIn, "trackData[0]:", rtTrackDat[0]);
     }
+    //if (selected == rtTrackDat[0]) console.log("time in:", timeIn, rtTrackDat);
     return selected;
 }
 let radioTxtScrl = 0;
@@ -350,12 +385,14 @@ function maintainTrackInfo() {
 
     //console.log(cursor);
     if (!rtTrackDat[0]) {
-        console.log("rtTrackDat",rtTrackDat);
+        //console.log("rtTrackDat",rtTrackDat);
+        setTimeout(maintainTrackInfo, 5000);
         return;
     }
     const currentTrack = getTrackFromBlocktime(cursor);
     if (!currentTrack) {
-        console.log("cursor", cursor, "rtTrackDat", rtTrackDat);
+        //console.log("cursor", cursor, "rtTrackDat", rtTrackDat);
+        setTimeout(maintainTrackInfo, 10000);
         return;
     }
 
@@ -371,14 +408,13 @@ function maintainTrackInfo() {
 // User-triggered functions
 async function playMusic() {
     playing = true;
-    //console.log("Playing: ", playing);
 
     await unlockAudio();
     loadTime = Date.now();
+    buttonClick = loadTime;
     refresh();
     await scheduleChunk();
 
-    //console.log(getTimeUntilNext30Mins());
 
     setTimeout(maintainScheduler, getTimeUntilNext30Mins() - 250);
     maintainTrackInfo();
@@ -386,7 +422,7 @@ async function playMusic() {
 
 function pauseMusic() {
     playing = false;
-    masterGain.gain.value = 0.01;
+    masterGain.gain.value = 0.001;
 }
 
 toggleVisibility();
@@ -395,11 +431,10 @@ async function toggleRadio(){
     if (unlocked == false) {
         await playMusic();
         drawWave();
-    } else if (masterGain.gain.value > 0.01) {
+    } else if (masterGain.gain.value > 0.001) {
         pauseMusic();
         radioText.innerHTML = "LOADING...";
     } else {
-        //console.log("flag");
         masterGain.gain.value = 1;
     }
 }
