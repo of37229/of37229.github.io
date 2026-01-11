@@ -3,17 +3,19 @@
   <head>
     <meta charset="utf-8">
     <title>DGL Radio</title>
-    <script src="radio.js" defer></script>
     <link rel="icon" type="image/x-icon" href="radio.svg">
-    <link rel="stylesheet" href="radio.css" id="style">
+    <link rel="stylesheet" type="text/css" href="" id="style">
+    <link rel="stylesheet" type="text/css" href="radio.css" id="universal-style">
     <meta name="description" content="DGL Radio">
+    <script src="https://dglight.neocities.org/scripts/styler.js" defer></script>
+    <script src="scripts/radio.js" defer></script>
   </head>
   <body>
-    <main>
+      <div class="container-line">
         <canvas class= "secretradio-spt" id="frequencyCanvas"></canvas>
         <button class="secretradio-btn" type="button" onclick="toggleRadio()"></button>
         <p class="radiotext" id="radiotext" style="visibility: visible;"><span class="partial-blink">LOADING...</span></p>
         <div>
-    </main>
+      </div>
   </body>
 </html>

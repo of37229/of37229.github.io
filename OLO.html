@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <title id ="Title"></title>
+    <link rel="icon" type="image/x-icon" href="https://dglight.neocities.org/assets/images/edited-neocities.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Hello, my name is OLO!">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="" id="style">
+    <script src="https://dglight.neocities.org/scripts/styler.js" defer></script>
+  </head>
+
+  <body>
+
+    <header>
+      <div style="display: flex; gap: 1rem;">
+        <button class="prev-button" id="Previous">
+          <img src="../assets/images/prv.svg" alt="Previous Branch">
+        </button>
+        <div class ="lifetime" id="Lifetime"></div>
+      </div>
+
+
+      <h1 id="ExpressionText">Derek's Website</h1>
+      <h2 id="ResponseText">thanks for stopping by</h2>
+
+    </header>
+
+    <main>
+      <form id="Options"></form>
+
+      <div id="ExpandAddContainer">
+        <button class="icon-button" id="ExpandAdd">
+          <img src="../assets/images/add.svg" alt="Add Response">
+        </button>
+      </div>
+
+      <div id="AddContainer" class="hidden">
+        <form id="AddForm">
+          <input type="text" id="NewButtonText" placeholder="New button text" maxlength="250" required>
+          <div id="ExpressionSelect"> Face:
+            <input type="text" id="lEyeSelect" placeholder="O" value="O" maxlength="1" required>
+            <p id="noseSelect">L</p>
+            <input type="text" id="rEyeSelect" placeholder="O" value="O" maxlength="1" required>
+          </div>
+          <textarea id="NewResponseText" placeholder="The reply that follows..." maxlength="250" required></textarea>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+
+    </main>
+
+    <footer>version 1.0.0 by Derek Light</footer>
+
+    <script type="module">
+      // IMPORTS AND REQS
+      import { initializeApp} from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-analytics.js";
+
+      import { getFirestore, collection, getCountFromServer, query, limit, orderBy, startAt, getDocs, getDoc, setDoc, doc, addDoc, updateDoc, deleteDoc, arrayUnion, arrayRemove, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
+
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      const firebaseConfig = {
+        apiKey: "AIzaSyBzpWqNgUyRSW_ybwFPVR3P0qRyB3nkNbo",
+        authDomain: "dialogue-toy.firebaseapp.com",
+        projectId: "dialogue-toy",
+        storageBucket: "dialogue-toy.firebasestorage.app",
+        messagingSenderId: "616321089209",
+        appId: "1:616321089209:web:fbecc10212943cf37a6568",
+        measurementId: "G-JHJVEJK20J"
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+      const db = getFirestore(app);
+
+      // Helper functions
+      function getBranch(){
+        let br = location.hash.replace("#", "") || "main";
+        return br;
+      }
+      async function getRandomBranch(){
+        const colRef = collection(db, "branches");
+        const snapshotCt = await getCountFromServer(colRef);
+        const ct = snapshotCt.data().count;
+
+        if (ct === 0) return;
+        const rndOffset = Math.floor(Math.random() * ct);
+        const rndQry = query(colRef, orderBy("__name__"), limit(1), startAt(String(rndOffset)));
+
+        const snapshot = await getDocs(rndQry);
+        if (snapshot.empty) return;
+        return snapshot.docs[0].id;
+      }
+      function toDateTime(secs) {
+        const h = Math.floor(secs / 3600);
+        const m = Math.floor((secs % 3600) / 60);
+        const s = (secs % 60) - (secs % 1);
+        return `${h}h ${m}m ${s}s`;
+
+        //let seconds = secs - (secs % 1);
+        //let minutes = (seconds / 60);
+        //let hours = (minutes / 60);
+
+        //return `${hours}:${minutes}:${seconds}`;
+        //return seconds;
+      }
+
+      // Get document elements (PRE-LOADED)
+      const backbutton = document.getElementById("Previous");
+      const lifetime = document.getElementById("Lifetime");
+      const titleExpression = document.getElementById("Title");
+      const expressionText = document.getElementById("ExpressionText");
+      const responseText = document.getElementById("ResponseText");
+      const optionsForm = document.getElementById("Options");
+      const addButton = document.getElementById("ExpandAdd");
+      const addContainer = document.getElementById("AddContainer");
+      const addForm = document.getElementById("AddForm");
+      const inputButtonText = document.getElementById("NewButtonText");
+      const inputLEye = document.getElementById("lEyeSelect");
+      const inputREye = document.getElementById("rEyeSelect");
+      const inputResponseText = document.getElementById("NewResponseText");
+
+      // Testing and error handling
+      async function testRead() {
+        const snapshot = await getDocs(collection(db, "branches"));
+        snapshot.forEach(doc => console.log(doc.id, "=>", doc.data()));
+      }
+
+      // Fingerprint the session - should I know you?
+      async function getClientId() {
+        const key = 'dialogueToy:clientId';
+        let id = localStorage.getItem(key);
+        if (id) {
+          return id;
+        }
+
+        // light fingerprint: userAgent + screen size + languages
+        const uuid = crypto.randomUUID();
+        const fp = [
+          navigator.userAgent || '',
+          `${screen.width}x${screen.height}`,
+          (navigator.languages || []).join(',')
+        ].join('||');
+
+        const enc = new TextEncoder();
+        const data = enc.encode(uuid + '||' + fp);
+        const hashBuf = await crypto.subtle.digest('SHA-256', data);
+        const hashArray = Array.from(new Uint8Array(hashBuf));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2,'0')).join('');
+
+        id = hashHex; // persistent hashed client id
+        localStorage.setItem(key, id);
+        return id;
+      }
+
+      // Cleanup handling
+      async function startBranchCleanup(intervalMs = 5000, batchSize = 10) {
+        const colRef = collection(db, "branches");
+
+        async function cleanupCycle() {
+          try {
+            const randomStart = Math.random().toString(36).slice(2);
+            const randomQuery = query(colRef, orderBy("__name__"), startAt(randomStart), limit(batchSize));
+            const snapshot = await getDocs(randomQuery);
+
+            const now = Date.now();
+
+            const deletions = snapshot.docs.map(async (branchDoc) => {
+              const data = branchDoc.data();
+              const expires = data.expires?.toMillis?.() ?? 0;
+
+              // Skip if not expired
+              if (expires >= now || !expires) return;
+
+              // If parent exists, remove this branch ID from its parent's array
+              if (data.parentId) {
+                try {
+                  const parentPath = data.parentId.startsWith("/branches/")
+                    ? data.parentId
+                    : `/branches/${data.parentId}`;
+
+                  console.log("Call to delete " + branchDoc + " from parent.");
+
+                  const parentRef = doc(db, parentPath);
+                  await updateDoc(parentRef, {
+                    responses: arrayRemove(branchDoc.ref)
+                  });
+
+                } catch (err) {
+                  console.warn(`Failed to update parent for ${branchDoc.id}:`, err);
+                }
+              }
+
+              // Delete the expired branch
+              try {
+                console.log("Call to delete " + branchDoc.id + "  Expired - " + expires);
+                await deleteDoc(branchDoc.ref);
+              } catch (err) {
+                console.warn(`Failed to delete ${branchDoc.id}:`, err);
+              }
+            });
+
+            await Promise.allSettled(deletions);
+
+          } catch (err) {
+            console.error("Cleanup error:", err);
+          } finally {
+            setTimeout(cleanupCycle, intervalMs + Math.random() * 2000);
+          }
+        }
+
+        cleanupCycle(); // Kick off
+      }
+
+      // Clock/countdown handling
+      async function startClockCycle(intervalMs) {
+        async function clockCycle(){
+          const docRef = doc(db, "branches", getBranch());
+          const docSnap = await getDoc(docRef);
+          if (!docSnap.data().expires) { return; } // Stop early
+
+          try {
+            const timeFormat = toDateTime(docSnap.data().expires.seconds - (Date.now() / 1000));
+            //console.log(timeFormat);
+            if (!docSnap) { throw new Error("Doc not found in clock handling function. (wtf?)"); }
+
+            lifetime.innerHTML = `<h5>Branch expires: ${timeFormat}</h5>`;
+
+          } catch (err) {
+            console.error("Clock handling error:", err);
+          } finally {
+            setTimeout(clockCycle, intervalMs);
+          }
+        }
+
+        clockCycle(); // Kick off
+      }
+
+      // Display functions
+      async function DisplayMessage(branchId){
+        const docRef = doc(db, "branches", branchId);
+        const docSnap = await getDoc(docRef);
+        const data = docSnap.data();
+
+        if (docSnap.exists()) {
+          if(!data.parentId) {backbutton.classList.add("hidden")} else {backbutton.classList.remove("hidden")};
+          backbutton.onclick = () => {
+            if(data.parentId){
+              location.hash = `${data.parentId.slice(10)}`;
+              location.reload();
+            }
+          }
+          titleExpression.innerHTML = `${data.expression}`;
+          expressionText.innerHTML = `<h1>${data.expression}</h1>`;
+          responseText.innerHTML = `<h3>${data.message}</h3>`;
+        } else {
+          expressionText.innerHTML = `<h1>—L—</h1>`;
+          responseText.innerHTML = `<h3>Branch "${branchId}" not found.</h3>`;
+        }
+      }
+
+      async function DisplayOptions(branchId){
+        optionsForm.innerHTML = '';
+
+        const docRef = doc(db, "branches", branchId);
+        const docSnap = await getDoc(docRef);
+
+        if (!docSnap.exists()) {
+          responseText.innerHTML = `<h3>Branch "${branchId}" not found.</h3>`;
+          addButton.innerHTML = "Return Home";
+          addButton.onclick = () => {
+            location.hash = "";
+            location.reload();
+          };
+          return;
+        }
+
+        const data = docSnap.data();
+        const buttonRefs = data.responses || [];
+        const buttonSnaps = await Promise.all(buttonRefs.map(ref => getDoc(ref)));
+
+        for (const snap of buttonSnaps){
+          if (snap.exists()) {
+            const refData = snap.data();
+            const button = document.createElement("button");
+
+            let text = refData.buttontext || refData.buttonText || "(no text)";
+
+            button.type = "button";
+            button.id = "OptionsButton";
+            button.textContent = "\"" + text + "\"";
+            button.onclick = () => {
+              location.hash = snap.id;
+            };
+            optionsForm.appendChild(button);
+          }
+          if (!snap.exists()) {
+            const buttonDocRef = doc(db, "branches", snap.id);
+            console.log("call to remove from array: ", buttonDocRef);
+            await updateDoc(docRef, {
+              responses: arrayRemove(buttonDocRef)
+            });
+          }
+        }
+      }
+
+      // MAIN VIEWING FUNCTION
+      function ViewBranch(branchId){
+        getClientId();
+        DisplayMessage(branchId);
+        DisplayOptions(branchId);
+
+      }
+
+      //testRead();
+      //console.log("Random branch: ", getRandomBranch());
+
+      window.addEventListener("load", (e) => {
+        let branch = getBranch();
+
+        e.preventDefault(); // don't reload page
+        startBranchCleanup();
+      });
+
+      // PAGE AND SERVER INFO LOADED:
+      window.addEventListener("DOMContentLoaded", () => {
+        console.log("Branch loaded: ", getBranch());
+        let branch = getBranch();
+
+        if (!getBranch()){
+          console.log("ERROR - Branch could not load"); //TODO - make proper error handling later
+          return;
+        }
+
+        ViewBranch(branch);
+      });
+
+      // HASH CHANGED:
+      window.addEventListener("hashchange", () => {
+        console.log("HASH CHANGED TO: ", location.hash);
+        const branch = getBranch();
+        ViewBranch(branch);
+        startClockCycle(1000, branch);
+      });
+
+      // Toggle visibility of new response form when + is clicked
+      addButton.addEventListener("click", (e) => {
+        e.stopPropagation(); // prevent triggering document click
+        addContainer.classList.toggle("hidden");
+      });
+
+      // Hide the new response form when clicking outside of it
+      document.addEventListener("click", (e) => {
+        if (!addContainer.classList.contains("hidden") && !addContainer.contains(e.target) && e.target !== addButton) {
+          addContainer.classList.add("hidden");
+        }
+      });
+
+      // SUBMIT NEW RESPONSE
+      addForm.addEventListener("submit", async (e) => {
+        e.preventDefault(); // don't reload page
+        const buttonText = inputButtonText.value.trim();
+        const lEyeText = inputLEye.value.trim();
+        const rEyeText = inputREye.value.trim();
+        const responseTextValue = inputResponseText.value.trim();
+
+        if (!buttonText || !responseTextValue || !lEyeText || !rEyeText) {
+          alert("Please fill in all fields.");
+          return;
+        }
+
+        const sessionId = localStorage.getItem('dialogueToy:clientId');
+        await setDoc(doc(db, "userStatus", sessionId), {
+          lastPostTime: serverTimestamp()
+        }, { merge: true });
+
+        // Get other info and compile
+        const thisBranch = getBranch();
+        const selExpress = lEyeText + "L" + rEyeText;
+
+        const newBranch = {
+          buttonText: buttonText.toString(),
+          expression: selExpress,
+          message: responseTextValue,
+          parentId: `/branches/${thisBranch}`,
+          author: sessionId,
+          created: serverTimestamp(),
+          expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+          responses: []
+        }
+
+        console.log("New branch proposal:", newBranch);
+
+         try {
+          const docRef = await addDoc(collection(db, "branches"), newBranch);
+
+          // Link it back to parent:
+          const parentRef = doc(db, "branches", thisBranch);
+          await updateDoc(parentRef, {
+            responses: arrayUnion(docRef)
+          });
+
+          console.log("New branch created:", docRef.id);
+          location.hash = docRef.id;
+        } catch (err) {
+          console.error("Error creating branch:", err);
+          alert("Error creating branch — please try again later.");
+        }
+
+        // Clear fields for convenience
+        inputButtonText.value = "";
+        inputResponseText.value = "";
+
+        // Hide again
+        addContainer.classList.add("hidden");
+      });
+
+    </script>
+
+  </body>
+</html>
