@@ -15,16 +15,13 @@
   <body>
 
     <header>
-      <div style="display: flex; gap: 1rem;">
-        <button class="prev-button" id="Previous">
-          <img src="../assets/images/prv.svg" alt="Previous Branch">
-        </button>
-        <div class ="lifetime" id="Lifetime"></div>
-      </div>
+      <button class="prev-button" id="Previous">
+        <img src="assets/prv.svg" alt="Previous Branch">
+      </button>
 
 
-      <h1 id="ExpressionText">Derek's Website</h1>
-      <h2 id="ResponseText">thanks for stopping by</h2>
+      <h1 id="ExpressionText">-L-</h1>
+      <h2 id="ResponseText">zzz...zzz...</h2>
 
     </header>
 
@@ -33,7 +30,7 @@
 
       <div id="ExpandAddContainer">
         <button class="icon-button" id="ExpandAdd">
-          <img src="../assets/images/add.svg" alt="Add Response">
+          <img src="assets/add.svg" alt="Add Response">
         </button>
       </div>
 
@@ -93,23 +90,9 @@
         if (snapshot.empty) return;
         return snapshot.docs[0].id;
       }
-      function toDateTime(secs) {
-        const h = Math.floor(secs / 3600);
-        const m = Math.floor((secs % 3600) / 60);
-        const s = (secs % 60) - (secs % 1);
-        return `${h}h ${m}m ${s}s`;
-
-        //let seconds = secs - (secs % 1);
-        //let minutes = (seconds / 60);
-        //let hours = (minutes / 60);
-
-        //return `${hours}:${minutes}:${seconds}`;
-        //return seconds;
-      }
 
       // Get document elements (PRE-LOADED)
       const backbutton = document.getElementById("Previous");
-      const lifetime = document.getElementById("Lifetime");
       const titleExpression = document.getElementById("Title");
       const expressionText = document.getElementById("ExpressionText");
       const responseText = document.getElementById("ResponseText");
@@ -153,89 +136,6 @@
         id = hashHex; // persistent hashed client id
         localStorage.setItem(key, id);
         return id;
-      }
-
-      // Cleanup handling
-      async function startBranchCleanup(intervalMs = 5000, batchSize = 10) {
-        const colRef = collection(db, "branches");
-
-        async function cleanupCycle() {
-          try {
-            const randomStart = Math.random().toString(36).slice(2);
-            const randomQuery = query(colRef, orderBy("__name__"), startAt(randomStart), limit(batchSize));
-            const snapshot = await getDocs(randomQuery);
-
-            const now = Date.now();
-
-            const deletions = snapshot.docs.map(async (branchDoc) => {
-              const data = branchDoc.data();
-              const expires = data.expires?.toMillis?.() ?? 0;
-
-              // Skip if not expired
-              if (expires >= now || !expires) return;
-
-              // If parent exists, remove this branch ID from its parent's array
-              if (data.parentId) {
-                try {
-                  const parentPath = data.parentId.startsWith("/branches/")
-                    ? data.parentId
-                    : `/branches/${data.parentId}`;
-
-                  console.log("Call to delete " + branchDoc + " from parent.");
-
-                  const parentRef = doc(db, parentPath);
-                  await updateDoc(parentRef, {
-                    responses: arrayRemove(branchDoc.ref)
-                  });
-
-                } catch (err) {
-                  console.warn(`Failed to update parent for ${branchDoc.id}:`, err);
-                }
-              }
-
-              // Delete the expired branch
-              try {
-                console.log("Call to delete " + branchDoc.id + "  Expired - " + expires);
-                await deleteDoc(branchDoc.ref);
-              } catch (err) {
-                console.warn(`Failed to delete ${branchDoc.id}:`, err);
-              }
-            });
-
-            await Promise.allSettled(deletions);
-
-          } catch (err) {
-            console.error("Cleanup error:", err);
-          } finally {
-            setTimeout(cleanupCycle, intervalMs + Math.random() * 2000);
-          }
-        }
-
-        cleanupCycle(); // Kick off
-      }
-
-      // Clock/countdown handling
-      async function startClockCycle(intervalMs) {
-        async function clockCycle(){
-          const docRef = doc(db, "branches", getBranch());
-          const docSnap = await getDoc(docRef);
-          if (!docSnap.data().expires) { return; } // Stop early
-
-          try {
-            const timeFormat = toDateTime(docSnap.data().expires.seconds - (Date.now() / 1000));
-            //console.log(timeFormat);
-            if (!docSnap) { throw new Error("Doc not found in clock handling function. (wtf?)"); }
-
-            lifetime.innerHTML = `<h5>Branch expires: ${timeFormat}</h5>`;
-
-          } catch (err) {
-            console.error("Clock handling error:", err);
-          } finally {
-            setTimeout(clockCycle, intervalMs);
-          }
-        }
-
-        clockCycle(); // Kick off
       }
 
       // Display functions
@@ -321,7 +221,7 @@
         let branch = getBranch();
 
         e.preventDefault(); // don't reload page
-        startBranchCleanup();
+        //startBranchCleanup();
       });
 
       // PAGE AND SERVER INFO LOADED:
@@ -342,7 +242,7 @@
         console.log("HASH CHANGED TO: ", location.hash);
         const branch = getBranch();
         ViewBranch(branch);
-        startClockCycle(1000, branch);
+        //startClockCycle(1000, branch);
       });
 
       // Toggle visibility of new response form when + is clicked
@@ -387,7 +287,7 @@
           parentId: `/branches/${thisBranch}`,
           author: sessionId,
           created: serverTimestamp(),
-          expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+          //expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
           responses: []
         }
 
