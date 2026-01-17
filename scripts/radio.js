@@ -294,6 +294,7 @@ let timetoStart = 0;
 let rtTrackDat = [];
 let rtRadioString = "";
 
+
 async function unlockAudio() {
     if (unlocked) return;
 
@@ -442,9 +443,8 @@ async function toggleRadio(){
 const canvas = document.getElementById("frequencyCanvas");
 const ctx = canvas.getContext("2d");
 function drawWave() {
-    requestAnimationFrame(drawWave);
-
     audioAlyz.getByteTimeDomainData(analyserData);
+
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.beginPath();
@@ -460,4 +460,33 @@ function drawWave() {
     }
 
     ctx.stroke();
+
+    const features = extractAudioFeatures();
+    parent.postMessage({
+        type: "audio",
+        bass: features.bass,
+        mids: features.mids,
+        highs: features.highs,
+        volume: features.volume
+    }, "*");
+
+    requestAnimationFrame(drawWave);
+}
+function extractAudioFeatures() {
+    audioAlyz.getByteFrequencyData(analyserData);
+
+    const bassRange = analyserData.slice(0, 20);
+    const midRange  = analyserData.slice(20, 80);
+    const highRange = analyserData.slice(80, 200);
+
+    const avg = arr => arr.reduce((a,b)=>a+b,0)/arr.length;
+
+    const bass = avg(bassRange) / 255;
+    const mids = avg(midRange) / 255;
+    const highs = avg(highRange) /255;
+
+    // overall loudness proxy
+    const volume = avg(analyserData) / 255;
+
+    return { bass, mids, highs, volume };
 }
