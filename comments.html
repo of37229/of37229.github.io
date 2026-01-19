@@ -60,7 +60,7 @@
 
         <div id="container-comment" class="hidden">
           <form class="Comment-Form" id="index-form">
-            <textarea style="width:99%; resize:none;" placeholder="Leave a nice comment!" maxlength="1000" required></textarea>
+            <textarea class="comment-textarea" placeholder="Leave a nice comment!" maxlength="1000" required></textarea>
             <input type="text" id="DisplayName" placeholder="Optional DisplayName" maxlength="25">
             <button type="button" class="form-button" onclick="insertLink(this.parentElement.firstElementChild);">
               <img src="assets/link.svg" alt="Add link">
@@ -90,7 +90,7 @@
 
         <div id="container-comment" class="hidden">
           <form class="Comment-Form" id="uglycry-form">
-            <textarea style="width:99%; resize:none;" placeholder="Leave a nice comment!" maxlength="1000" required></textarea>
+            <textarea class="comment-textarea" placeholder="Leave a nice comment!" maxlength="1000" required></textarea>
             <input type="text" id="DisplayName" placeholder="Optional DisplayName" maxlength="25">
             <button type="button" class="form-button" onclick="insertLink(this.parentElement.firstElementChild);">
               <img src="assets/link.svg" alt="Add link">
@@ -116,7 +116,7 @@
 
         <div id="container-comment" class="hidden">
           <form class="Comment-Form" id="ashenvillage-form">
-            <textarea style="width:99%; resize:none;" placeholder="Leave a nice comment!" maxlength="1000" required></textarea>
+            <textarea class="comment-textarea" placeholder="Leave a nice comment!" maxlength="1000" required></textarea>
             <input type="text" id="DisplayName" placeholder="Optional DisplayName" maxlength="25">
             <button type="button" class="form-button" onclick="insertLink(this.parentElement.firstElementChild);">
               <img src="assets/link.svg" alt="Add link">
@@ -305,7 +305,7 @@
         const replyBtn = document.createElement("button");
         replyBtn.className = "reply-btn";
         replyBtn.textContent = "Reply";
-        replyBtn.setAttribute("onclick", `toggleHidden(this.parentElement.parentElement.parentElement.querySelector("#container-comment")); toggleHidden(this.parentElement.parentElement.parentElement.querySelector("#newcomment")); insertReply(this.parentElement.parentElement.parentElement.querySelector("textarea"), "${data.user}");`);
+        replyBtn.setAttribute("onclick", `toggleHidden(this.parentElement.parentElement.parentElement.querySelector("#container-comment")); toggleHidden(this.parentElement.parentElement.parentElement.querySelector("#newcomment")); insertReply(this.parentElement.parentElement.parentElement.querySelector("textarea"), "${id}");`);
         // dont look at that... d- don't look at that...
 
         const replies = document.createElement("div");
