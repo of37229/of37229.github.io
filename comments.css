@@ -1,0 +1,19 @@
+main {
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+h4 {
+    margin: 0;
+    padding: 0;
+    justify-self:center;
+}
+
+hr {
+    width: 100%;
+}
+
+img {
+    max-width: 100%;
+}

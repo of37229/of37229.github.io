@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <title id ="Title">Comments</title>
+    <link rel="icon" type="image/x-icon" href="https://dglight.neocities.org/assets/images/edited-neocities.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A tool I made for displaying comments people have left for stuff I have on my website, dglight.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="" id="style">
+    <link rel="stylesheet" href="comments.css" id="style-static">
+    <script src="https://dglight.neocities.org/scripts/styler.js" defer></script>
+  </head>
+
+  <body>
+    <header>
+      <div class="container-line">
+        <h4>Comments</h4>
+      </div>
+    </header>
+
+    <main >
+      <script>
+        function toggleHidden(element){
+          element.classList.toggle("hidden");
+        }
+        function insertLink(textContent){
+          insertedStr = "[lnk:link text:example.com]";
+          if (textContent.value.length + insertedStr.length > 1000){
+            alert("Not enough room");
+            console.log("Error - not enough room to insert linktext", "=>", textContent.value, textContent.value.length + "chars");
+            return;
+          }
+          textContent.value += insertedStr;
+        }
+        function insertImage(textContent){
+          insertedStr = "[img:example.com/image.png]";
+          if (textContent.value.length + insertedStr.length > 1000){
+            alert("Not enough room");
+            console.log("Error - not enough room to insert imagetext", "=>", textContent.value, textContent.value.length + "chars");
+            return;
+          }
+          textContent.value += insertedStr;
+        }
+        function insertReply(textContent, uid){
+          insertedStr = "@" + uid.toString();
+          //console.log(textContent);
+          if (textContent.value.length + insertedStr.length > 1000){
+            alert("Not enough room");
+            console.log("Error - not enough room to insert reply text", "=>", textContent.value, textContent.value.length + "chars");
+            return;
+          }
+          textContent.value += insertedStr;
+        }
+      </script>
+
+      <div id="index" style="width:100%">
+        <div id="dumpline"></div>
+
+        <div id="container-comment" class="hidden">
+          <form class="Comment-Form" id="index-form">
+            <textarea style="width:99%; resize:none;" placeholder="Leave a nice comment!" maxlength="1000" required></textarea>
+            <input type="text" id="DisplayName" placeholder="Optional DisplayName" maxlength="25">
+            <button type="button" class="form-button" onclick="insertLink(this.parentElement.firstElementChild);">
+              <img src="assets/link.svg" alt="Add link">
+            </button>
+            <button type="button" class="form-button" onclick="insertImage(this.parentElement.firstElementChild);">
+              <img src="assets/img.svg" alt="Add image">
+            </button>
+            <button class="comment-btn" type="submit">Post</button>
+          </form>
+        </div>
+
+        <button class="newcomment-button hidden" id="newcomment" onclick="
+          toggleHidden(this.parentElement.querySelector(`#container-comment`));
+          toggleHidden(this);
+        ">
+            <img src="assets/add.svg" alt="Add Comment">
+        </button>
+
+      </div>
+
+      <br>
+      <br>
+
+
+      <div id="uglycry" style="width:100%">
+        <div id="dumpline"></div>
+
+        <div id="container-comment" class="hidden">
+          <form class="Comment-Form" id="uglycry-form">
+            <textarea style="width:99%; resize:none;" placeholder="Leave a nice comment!" maxlength="1000" required></textarea>
+            <input type="text" id="DisplayName" placeholder="Optional DisplayName" maxlength="25">
+            <button type="button" class="form-button" onclick="insertLink(this.parentElement.firstElementChild);">
+              <img src="assets/link.svg" alt="Add link">
+            </button>
+            <button type="button" class="form-button" onclick="insertImage(this.parentElement.firstElementChild);">
+              <img src="assets/img.svg" alt="Add image">
+            </button>
+            <button class="comment-btn" type="submit">Post</button>
+          </form>
+        </div>
+
+        <button class="newcomment-button hidden" id="newcomment" onclick="
+          toggleHidden(this.parentElement.querySelector(`#container-comment`));
+          toggleHidden(this);
+        ">
+            <img src="assets/add.svg" alt="Add Comment">
+        </button>
+
+      </div>
+
+      <div id="ashenvillage" style="width:100%">
+        <div id="dumpline"></div>
+
+        <div id="container-comment" class="hidden">
+          <form class="Comment-Form" id="ashenvillage-form">
+            <textarea style="width:99%; resize:none;" placeholder="Leave a nice comment!" maxlength="1000" required></textarea>
+            <input type="text" id="DisplayName" placeholder="Optional DisplayName" maxlength="25">
+            <button type="button" class="form-button" onclick="insertLink(this.parentElement.firstElementChild);">
+              <img src="assets/link.svg" alt="Add link">
+            </button>
+            <button type="button" class="form-button" onclick="insertImage(this.parentElement.firstElementChild);">
+              <img src="assets/img.svg" alt="Add image">
+            </button>
+            <button class="comment-btn" type="submit">Post</button>
+          </form>
+        </div>
+
+        <button class="newcomment-button hidden" id="newcomment" onclick="
+          toggleHidden(this.parentElement.querySelector(`#container-comment`));
+          toggleHidden(this);
+        ">
+            <img src="assets/add.svg" alt="Add Comment">
+        </button>
+
+      </div>
+
+      <br>
+      <br>
+
+
+    <script type="module">
+      // IMPORTS AND REQS
+      import { initializeApp} from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+
+      import { getFirestore, collection, getCountFromServer, query, limit, orderBy, startAt, getDocs, getDoc, setDoc, doc, addDoc, updateDoc, deleteDoc, arrayUnion, arrayRemove, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
+
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      const firebaseConfig = {
+        apiKey: "AIzaSyANZIQHRlE_IJgd5SByveUUAjDkOQo1CKo",
+        authDomain: "dglight-comments.firebaseapp.com",
+        projectId: "dglight-comments",
+        storageBucket: "dglight-comments.firebasestorage.app",
+        messagingSenderId: "989971996321",
+        appId: "1:989971996321:web:520d042a6b0b3a2950dae0"
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      //Document referrers
+      const indexSE = document.getElementById("index");
+      const indexForm = document.getElementById("index-form");
+      const uglycrySE = document.getElementById("uglycry");
+      const uglycryForm = document.getElementById("uglycry-form");
+      const ashenvillageSE = document.getElementById("ashenvillage");
+      const ashenvillageForm = document.getElementById("ashenvillage-form");
+
+      // Helpers
+      async function encodeToId(str, map, len){
+        const enc = new TextEncoder();
+        const data = enc.encode(len + '||' + str);
+        const hashBuf = await crypto.subtle.digest('SHA-256', data);
+        const hashArray = Array.from(new Uint8Array(hashBuf));
+        const hashHex = hashArray.map(b => b.toString(map).padStart(2,'0')).join('').substring(0, len);
+        return hashHex;
+      }
+      function getSectionDumpline(section){
+        return document.getElementById(section.firstElementChild);
+      }
+      function parseCommentText(text) {
+        let out = text
+          .replace(/\[img:(.*?)\]/g, `<img class="comment-image" src="$1" alt="">`)
+          .replace(/\[lnk:(.*?)\]/g, (match, inner) => {
+            const parts = inner.split(":");
+            if (parts.length >= 2) {
+              const label = parts[0];
+              const url = parts.slice(1).join(":");
+              return `<a class="comment-link" href="https://${url}" target="_blank">${label}</a>`;
+            }
+            return match;
+          });
+
+        return out;
+      }
+      async function doWork(subject){
+        let id = await getClientId();
+        const offset = Math.floor(Math.random(id) * 10);
+        //console.log(offset);
+        let res = subject;
+        for (let i = 0; i < 25 + offset; i++){
+          const newres = await encodeToId(res, 36, 23);
+          res = newres;
+        }
+        return res;
+      }
+      function getReplyReference(string){
+        const startInd = string.indexOf("@") + 1;
+        if (startInd === -1) { return ""; }
+        return string.substring(startInd, startInd + 6);
+      }
+
+      // Testing and error handling
+      async function testRead(place) {
+        const snapshot = await getDocs(collection(db, place));
+        snapshot.forEach(doc =>
+          console.log(doc.id, "=>", doc.data(), parseCommentText(doc.data().comtext))
+        );
+      }
+
+      // Fingerprint the session - should I know you?
+      async function getClientId() {
+        const key = 'dglight-sitewide:clientId';
+        let id = localStorage.getItem(key);
+        if (id) { return id; }
+
+        // light fingerprint: userAgent + screen size + languages (nothing revealing, don't yall worry)
+        const fp = [
+          navigator.userAgent || '',
+          `${screen.width}x${screen.height}`,
+          (navigator.languages || []).join(',')
+        ].join('||');;
+
+        const hashHex = await encodeToId(fp, 36, 4);
+
+        id = hashHex; // persistent hashed client id
+        localStorage.setItem(key, id);
+        return id;
+      }
+
+      // NEW SUBMISSION FUNCTION
+      async function newSubmission(formElement, superElement){
+        const textContent = formElement.firstElementChild;
+        const text = textContent.value;
+        const reply = getReplyReference(text);
+        const work = await doWork(document.querySelector("meta[name='description']")?.content);
+        if(textContent.validity.valid != true){
+          alert("Comment Invalid");
+          console.log("Error - text not valid", "=>", textContent.validity);
+          return;
+        }else{
+          formElement.firstElementChild.value = "Posting...";
+        }
+        const messageId = await encodeToId(text, 36, 6);
+        const userId = await getClientId();
+        let displayName = formElement.querySelector("#DisplayName").value;
+        if(displayName.length == 0){
+          alert("Display name empty, posing as 'Anonymous'");
+          displayName = "Anonymous";
+        }
+
+        const newProposal = {
+          comtext: text.toString(),
+          disp: displayName.toString(),
+          repto: reply.toString(),
+          up: Math.floor(0),
+          user: userId.toString(),
+          work: work.toString(),
+        }
+
+        //console.log("New comment proposal:", superElement.id, "=>" , newProposal);
+        const docRef = doc(db, superElement.id, messageId.toString());
+
+        //return;
+
+        try {
+          await setDoc(docRef, newProposal);
+          console.log("New comment posted");
+        } catch (err) {
+          console.error("Error creating branch:", err);
+          alert("Error posting comment — try again or contact Derek. Do not spam.");
+        }
+      }
+
+      // CREATE COMMENT FUNCTION
+      function createComment(id, data) {
+        const wrapper = document.createElement("div");
+        wrapper.className = "comment";
+        wrapper.dataset.id = id;
+
+        const top = document.createElement("div");
+        top.className = "comment-header";
+        top.innerHTML = `
+          <span class="comment-name">${data.disp || "Anonymous"}</span>
+          <span class="comment-user">@${data.user}</span>
+        `;
+
+        const body = document.createElement("div");
+        body.className = "comment-body";
+        body.innerHTML = parseCommentText(data.comtext);
+
+        const replyBtn = document.createElement("button");
+        replyBtn.className = "reply-btn";
+        replyBtn.textContent = "Reply";
+        replyBtn.setAttribute("onclick", `toggleHidden(this.parentElement.parentElement.parentElement.querySelector("#container-comment")); toggleHidden(this.parentElement.parentElement.parentElement.querySelector("#newcomment")); insertReply(this.parentElement.parentElement.parentElement.querySelector("textarea"), "${data.user}");`);
+        // dont look at that... d- don't look at that...
+
+        const replies = document.createElement("div");
+        replies.className = "replies";
+
+        wrapper.appendChild(top);
+        wrapper.appendChild(body);
+        wrapper.appendChild(replyBtn);
+        wrapper.appendChild(replies);
+
+        return wrapper;
+      }
+
+      // READ COMMENT FUNCTION
+      async function readComments(sectionId) {
+        const section = document.getElementById(sectionId);
+        if (!section) return;
+        const dumpline = section.querySelector("#dumpline");
+        if (!dumpline) return;
+        const snapshot = await getDocs(collection(db, sectionId));
+
+        const comments = [];
+        snapshot.forEach(doc => { comments.push({ id: doc.id,...doc.data() }); });
+        comments.sort((a, b) => b.up - a.up); // Sort by up [TODO - MAKE UPs lol]
+
+        // map to sort
+        const nodeMap = new Map();
+        comments.forEach(c => {
+          nodeMap.set(c.id, createComment(c.id, c));
+        });
+
+        // actual creation part
+        const container = document.createElement("div");
+        container.className = "comment-thread";
+        // Attach nodes with reply subsorting
+        comments.forEach(c => {
+          const node = nodeMap.get(c.id);
+          if (c.repto && nodeMap.has(c.repto)) {
+            const parent = nodeMap.get(c.repto);
+            parent.querySelector(".replies").appendChild(node);
+          } else {
+            container.appendChild(node); //99% will go here
+          }
+        });
+
+        dumpline.after(container);
+      }
+
+      // NEW SUBMISSION LISTENERS
+      indexForm.addEventListener("submit", async (e) => {
+        e.preventDefault(); // don't reload page
+        const textContent = indexForm.firstElementChild;
+        await newSubmission(indexForm, indexSE);
+        toggleHidden(indexSE.querySelector(`#container-comment`));
+        toggleHidden(indexSE.querySelector(`#newcomment`));
+        textContent.value = "";
+        location.reload();
+      });
+
+      uglycryForm.addEventListener("submit", async (e) => {
+        e.preventDefault(); // don't reload page
+        const textContent = uglycryForm.firstElementChild;
+        await newSubmission(uglycryForm, uglycrySE);
+        toggleHidden(uglycrySE.querySelector(`#container-comment`));
+        toggleHidden(uglycrySE.querySelector(`#newcomment`));
+        textContent.value = "";
+        location.reload();
+      });
+
+      ashenvillageForm.addEventListener("submit", async (e) => {
+        e.preventDefault(); // don't reload page
+        const textContent = ashenvillageForm.firstElementChild;
+        await newSubmission(ashenvillageForm, ashenvillageSE);
+        toggleHidden(ashenvillageSE.querySelector(`#container-comment`));
+        toggleHidden(ashenvillageSE.querySelector(`#newcomment`));
+        textContent.value = "";
+        location.reload();
+      });
+
+
+      // CONTENT LISTENER
+      document.addEventListener("DOMContentLoaded", () => {
+        const section = location.hash.replace("#", "") || "index";
+        if (!section) return;
+        readComments(section);
+        //testRead(section);
+        const superElement = document.getElementById(section);
+        toggleHidden(superElement.querySelector(`#newcomment`));
+      });
+
+    </script>
+
+    </main>
+
+  </body>
+</html>
