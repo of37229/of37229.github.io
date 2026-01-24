@@ -8,7 +8,7 @@ const Segments = Object.freeze({
     EARLYBIRD: 26,      //until 6:30am cst
     MORNING: 32,        //until 10am cst
     LUNCH: 40,          //until 2pm cst
-    WORK: 48,           //until 6pm cst
+    WORK: 48            //until 6pm cst
 });
 
 const SegmentLists = Object.freeze({
@@ -32,7 +32,7 @@ const SegmentLists = Object.freeze({
         "Bump - Hair",
         "Drift Night",
         "Fickle Minds",
-        "I need a Yesterday",
+        "I Need a Yesterday",
         "It's Called Freefall",
         "Morning Blunt",
         "Purp",
@@ -237,6 +237,7 @@ function getTrackList(songArray, radioData) {
     }));
 }
 function fillChunk(candidateList, targetLeng){
+    //debugger;
     let playlist = [];
     let lengList = getLengList(SegmentLists[segment], radioData);
 
