@@ -468,7 +468,7 @@ async function playMusic() {
 
 function pauseMusic() {
     playing = false;
-    masterGain.gain.value = 0.001;
+    masterGain.gain.value = 0.00001;
 }
 
 toggleVisibility();
@@ -477,7 +477,7 @@ async function toggleRadio(){
     if (unlocked == false) {
         await playMusic();
         drawWave();
-    } else if (masterGain.gain.value > 0.001) {
+    } else if (masterGain.gain.value > 0.1) {
         pauseMusic();
         radioText.innerHTML = "LOADING...";
     } else {
