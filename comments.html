@@ -23,6 +23,7 @@
     <main >
       <script>
         function toggleHidden(element){
+          //console.log("toggling " + element + " hidden.");
           element.classList.toggle("hidden");
         }
         function insertLink(textContent){
@@ -56,12 +57,12 @@
       </script>
 
       <div id="index" style="width:100%">
-        <div id="dumpline"></div>
+        <div id="index-dumpline"></div>
 
-        <div id="container-comment" class="hidden">
+        <div id="index-newcomment-container" class="hidden">
           <form class="Comment-Form" id="index-form">
             <textarea class="comment-textarea" placeholder="Leave a nice comment!" maxlength="1000" required></textarea>
-            <input type="text" id="DisplayName" placeholder="Optional DisplayName" maxlength="25">
+            <input type="text" class="DisplayName" placeholder="Optional DisplayName" maxlength="25">
             <button type="button" class="form-button" onclick="insertLink(this.parentElement.firstElementChild);">
               <img src="assets/link.svg" alt="Add link">
             </button>
@@ -72,26 +73,17 @@
           </form>
         </div>
 
-        <button class="newcomment-button hidden" id="newcomment" onclick="
-          toggleHidden(this.parentElement.querySelector(`#container-comment`));
-          toggleHidden(this);
-        ">
-            <img src="assets/add.svg" alt="Add Comment">
-        </button>
-
       </div>
 
-      <br>
-      <br>
 
 
       <div id="uglycry" style="width:100%">
-        <div id="dumpline"></div>
+        <div id="uglycry-dumpline"></div>
 
-        <div id="container-comment" class="hidden">
+        <div id="uglycry-newcomment-container" class="hidden">
           <form class="Comment-Form" id="uglycry-form">
             <textarea class="comment-textarea" placeholder="Leave a nice comment!" maxlength="1000" required></textarea>
-            <input type="text" id="DisplayName" placeholder="Optional DisplayName" maxlength="25">
+            <input type="text" class="DisplayName" placeholder="Optional DisplayName" maxlength="25">
             <button type="button" class="form-button" onclick="insertLink(this.parentElement.firstElementChild);">
               <img src="assets/link.svg" alt="Add link">
             </button>
@@ -102,22 +94,17 @@
           </form>
         </div>
 
-        <button class="newcomment-button hidden" id="newcomment" onclick="
-          toggleHidden(this.parentElement.querySelector(`#container-comment`));
-          toggleHidden(this);
-        ">
-            <img src="assets/add.svg" alt="Add Comment">
-        </button>
-
       </div>
+
+
 
       <div id="ashenvillage" style="width:100%">
-        <div id="dumpline"></div>
+        <div id="ashenvillage-dumpline"></div>
 
-        <div id="container-comment" class="hidden">
+        <div id="ashenvillage-newcomment-container" class="hidden">
           <form class="Comment-Form" id="ashenvillage-form">
             <textarea class="comment-textarea" placeholder="Leave a nice comment!" maxlength="1000" required></textarea>
-            <input type="text" id="DisplayName" placeholder="Optional DisplayName" maxlength="25">
+            <input type="text" class="DisplayName" placeholder="Optional DisplayName" maxlength="25">
             <button type="button" class="form-button" onclick="insertLink(this.parentElement.firstElementChild);">
               <img src="assets/link.svg" alt="Add link">
             </button>
@@ -128,17 +115,50 @@
           </form>
         </div>
 
-        <button class="newcomment-button hidden" id="newcomment" onclick="
-          toggleHidden(this.parentElement.querySelector(`#container-comment`));
-          toggleHidden(this);
-        ">
-            <img src="assets/add.svg" alt="Add Comment">
-        </button>
+      </div>
+
+
+
+      <div id="openhexagon" style="width:100%">
+        <div id="openhexagon-dumpline"></div>
+
+        <div id="openhexagon-newcomment-container" class="hidden">
+          <form class="Comment-Form" id="openhexagon-form">
+            <textarea class="comment-textarea" placeholder="Leave a nice comment!" maxlength="1000" required></textarea>
+            <input type="text" class="DisplayName" placeholder="Optional DisplayName" maxlength="25">
+            <button type="button" class="form-button" onclick="insertLink(this.parentElement.firstElementChild);">
+              <img src="assets/link.svg" alt="Add link">
+            </button>
+            <button type="button" class="form-button" onclick="insertImage(this.parentElement.firstElementChild);">
+              <img src="assets/img.svg" alt="Add image">
+            </button>
+            <button class="comment-btn" type="submit">Post</button>
+          </form>
+        </div>
 
       </div>
 
-      <br>
-      <br>
+
+
+      <div id="cyberpunkalleyway" style="width:100%">
+        <div id="cyberpunkalleyway-dumpline"></div>
+
+        <div id="cyberpunkalleyway-newcomment-container" class="hidden">
+          <form class="Comment-Form" id="cyberpunkalleyway-form">
+            <textarea class="comment-textarea" placeholder="Leave a nice comment!" maxlength="1000" required></textarea>
+            <input type="text" class="DisplayName" placeholder="Optional DisplayName" maxlength="25">
+            <button type="button" class="form-button" onclick="insertLink(this.parentElement.firstElementChild);">
+              <img src="assets/link.svg" alt="Add link">
+            </button>
+            <button type="button" class="form-button" onclick="insertImage(this.parentElement.firstElementChild);">
+              <img src="assets/img.svg" alt="Add image">
+            </button>
+            <button class="comment-btn" type="submit">Post</button>
+          </form>
+        </div>
+
+      </div>
+
 
 
     <script type="module">
@@ -162,12 +182,11 @@
       const db = getFirestore(app);
 
       //Document referrers
-      const indexSE = document.getElementById("index");
-      const indexForm = document.getElementById("index-form");
-      const uglycrySE = document.getElementById("uglycry");
-      const uglycryForm = document.getElementById("uglycry-form");
-      const ashenvillageSE = document.getElementById("ashenvillage");
-      const ashenvillageForm = document.getElementById("ashenvillage-form");
+      const section = location.hash.replace("#", "") || "index";
+      const superElement = document.getElementById(section);
+      const formElement = document.getElementById(section + "-form");
+      const newCommentButton = document.getElementById("newcomment-btn-" + section);
+      const newCommentContainer = document.getElementById(section + "-newcomment-container");
 
       // Helpers
       async function encodeToId(str, map, len){
@@ -177,9 +196,6 @@
         const hashArray = Array.from(new Uint8Array(hashBuf));
         const hashHex = hashArray.map(b => b.toString(map).padStart(2,'0')).join('').substring(0, len);
         return hashHex;
-      }
-      function getSectionDumpline(section){
-        return document.getElementById(section.firstElementChild);
       }
       function parseCommentText(text) {
         let out = text
@@ -242,7 +258,7 @@
       }
 
       // NEW SUBMISSION FUNCTION
-      async function newSubmission(formElement, superElement){
+      async function newSubmission(){
         const textContent = formElement.firstElementChild;
         const text = textContent.value;
         const reply = getReplyReference(text);
@@ -256,9 +272,9 @@
         }
         const messageId = await encodeToId(text, 36, 6);
         const userId = await getClientId();
-        let displayName = formElement.querySelector("#DisplayName").value;
+        let displayName = formElement.querySelector(".DisplayName").value;
         if(displayName.length == 0){
-          alert("Display name empty, posing as 'Anonymous'");
+          formElement.firstElementChild.value = "Display name empty. Posing as 'Anonymous'...";
           displayName = "Anonymous";
         }
 
@@ -278,7 +294,7 @@
 
         try {
           await setDoc(docRef, newProposal);
-          console.log("New comment posted");
+          console.log("New comment posted! :)");
         } catch (err) {
           console.error("Error creating branch:", err);
           alert("Error posting comment — try again or contact Derek. Do not spam.");
@@ -289,31 +305,32 @@
       function createComment(id, data) {
         const wrapper = document.createElement("div");
         wrapper.className = "comment";
-        wrapper.dataset.id = id;
+        wrapper.id = "comment-" + id;
 
         const top = document.createElement("div");
         top.className = "comment-header";
-        top.innerHTML = `
-          <span class="comment-name">${data.disp || "Anonymous"}</span>
-          <span class="comment-user">#${data.user}</span>
-        `;
+        top.innerHTML = `<span class="comment-name">"${data.disp || "Anonymous"}"(#${data.user}) posted comment</span>`;
+
+        const replyBtn = document.createElement("button");
+        replyBtn.className = "reply-btn";
+        replyBtn.id = "reply-btn-" + id;
+        replyBtn.textContent = "@" + id;
+        replyBtn.title = "Click here to reply"
+        replyBtn.onclick = function(event) {
+          insertReply(superElement.querySelector("textarea"), id);
+        };
+
+        top.appendChild(replyBtn);
 
         const body = document.createElement("div");
         body.className = "comment-body";
         body.innerHTML = parseCommentText(data.comtext);
-
-        const replyBtn = document.createElement("button");
-        replyBtn.className = "reply-btn";
-        replyBtn.textContent = "Reply";
-        replyBtn.setAttribute("onclick", `toggleHidden(this.parentElement.parentElement.parentElement.querySelector("#container-comment")); toggleHidden(this.parentElement.parentElement.parentElement.querySelector("#newcomment")); insertReply(this.parentElement.parentElement.parentElement.querySelector("textarea"), "${id}");`);
-        // dont look at that... d- don't look at that...
 
         const replies = document.createElement("div");
         replies.className = "replies";
 
         wrapper.appendChild(top);
         wrapper.appendChild(body);
-        wrapper.appendChild(replyBtn);
         wrapper.appendChild(replies);
 
         return wrapper;
@@ -321,30 +338,30 @@
 
       // READ COMMENT FUNCTION
       async function readComments(sectionId) {
-        const section = document.getElementById(sectionId);
-        if (!section) return;
-        const dumpline = section.querySelector("#dumpline");
-        if (!dumpline) return;
+        const dumpline = document.getElementById(sectionId + "-dumpline");
+        if (!dumpline) {console.warn("No location declared to display comments at for this page yet (safety measure) this page is likely still under construction."); return;}
         const snapshot = await getDocs(collection(db, sectionId));
 
+        //console.log("Found comment referrers. Loading comments...");
+        // load into list
         const comments = [];
         snapshot.forEach(doc => { comments.push({ id: doc.id,...doc.data() }); });
         comments.sort((a, b) => b.up - a.up); // Sort by up [TODO - MAKE UPs lol]
 
-        // map to sort
+        // map to sorted list
         const nodeMap = new Map();
-        comments.forEach(c => {
-          nodeMap.set(c.id, createComment(c.id, c));
+        comments.forEach(comm => {
+          nodeMap.set(comm.id, createComment(comm.id, comm));
         });
 
         // actual creation part
         const container = document.createElement("div");
         container.className = "comment-thread";
         // Attach nodes with reply subsorting
-        comments.forEach(c => {
-          const node = nodeMap.get(c.id);
-          if (c.repto && nodeMap.has(c.repto)) {
-            const parent = nodeMap.get(c.repto);
+        comments.forEach(comm => {
+          const node = nodeMap.get(comm.id);
+          if (comm.repto && nodeMap.has(comm.repto)) {
+            const parent = nodeMap.get(comm.repto);
             parent.querySelector(".replies").appendChild(node);
           } else {
             container.appendChild(node); //99% will go here
@@ -355,45 +372,23 @@
       }
 
       // NEW SUBMISSION LISTENERS
-      indexForm.addEventListener("submit", async (e) => {
-        e.preventDefault(); // don't reload page
-        const textContent = indexForm.firstElementChild;
-        await newSubmission(indexForm, indexSE);
-        toggleHidden(indexSE.querySelector(`#container-comment`));
-        toggleHidden(indexSE.querySelector(`#newcomment`));
-        textContent.value = "";
-        location.reload();
-      });
+      formElement.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const textAreaElm = formElement.firstElementChild;
 
-      uglycryForm.addEventListener("submit", async (e) => {
-        e.preventDefault(); // don't reload page
-        const textContent = uglycryForm.firstElementChild;
-        await newSubmission(uglycryForm, uglycrySE);
-        toggleHidden(uglycrySE.querySelector(`#container-comment`));
-        toggleHidden(uglycrySE.querySelector(`#newcomment`));
-        textContent.value = "";
-        location.reload();
-      });
-
-      ashenvillageForm.addEventListener("submit", async (e) => {
-        e.preventDefault(); // don't reload page
-        const textContent = ashenvillageForm.firstElementChild;
-        await newSubmission(ashenvillageForm, ashenvillageSE);
-        toggleHidden(ashenvillageSE.querySelector(`#container-comment`));
-        toggleHidden(ashenvillageSE.querySelector(`#newcomment`));
-        textContent.value = "";
+        await newSubmission();
+        textAreaElm.value = "";
         location.reload();
       });
 
 
       // CONTENT LISTENER
       document.addEventListener("DOMContentLoaded", () => {
-        const section = location.hash.replace("#", "") || "index";
         if (!section) return;
         readComments(section);
-        //testRead(section);
-        const superElement = document.getElementById(section);
-        toggleHidden(superElement.querySelector(`#newcomment`));
+        toggleHidden(newCommentContainer);
+        const textAreaElm = formElement.firstElementChild;
+        if (textAreaElm.value.length > 0) textAreaElm.value = "";
       });
 
     </script>
