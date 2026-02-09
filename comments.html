@@ -386,7 +386,7 @@
       document.addEventListener("DOMContentLoaded", () => {
         if (!section) return;
         readComments(section);
-        toggleHidden(newCommentContainer);
+        if (newCommentContainer.classList.contains("hidden")) toggleHidden(newCommentContainer);
         const textAreaElm = formElement.firstElementChild;
         if (textAreaElm.value.length > 0) textAreaElm.value = "";
       });
