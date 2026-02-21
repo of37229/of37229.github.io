@@ -160,6 +160,26 @@
       </div>
 
 
+      <div id="librarywizard" style="width:100%">
+        <div id="librarywizard-dumpline"></div>
+
+        <div id="librarywizard-newcomment-container" class="hidden">
+          <form class="Comment-Form" id="librarywizard-form">
+            <textarea class="comment-textarea" placeholder="Leave a nice comment!" maxlength="1000" required></textarea>
+            <input type="text" class="DisplayName" placeholder="Optional DisplayName" maxlength="25">
+            <button type="button" class="form-button" onclick="insertLink(this.parentElement.firstElementChild);">
+              <img src="assets/link.svg" alt="Add link">
+            </button>
+            <button type="button" class="form-button" onclick="insertImage(this.parentElement.firstElementChild);">
+              <img src="assets/img.svg" alt="Add image">
+            </button>
+            <button class="comment-btn" type="submit">Post</button>
+          </form>
+        </div>
+
+      </div>
+
+
 
     <script type="module">
       // IMPORTS AND REQS
@@ -369,6 +389,21 @@
         });
 
         dumpline.after(container);
+        setTimeout(getDocHeight, 1000);
+      }
+
+      // mini height helper
+      function getDocHeight(){
+        var body = document.body,
+            html = document.documentElement;
+        var height = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight );
+          //console.log(height);
+        if (window.self !== window.top){
+          const queryWindow = window.parent;
+          const message = { type: "comments-height", h: height };
+          queryWindow.postMessage(message, window.location.origin);
+          return;
+        }
       }
 
       // NEW SUBMISSION LISTENERS
@@ -380,7 +415,6 @@
         textAreaElm.value = "";
         location.reload();
       });
-
 
       // CONTENT LISTENER
       document.addEventListener("DOMContentLoaded", () => {
