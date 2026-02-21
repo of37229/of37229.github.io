@@ -399,9 +399,8 @@
         var height = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight );
           //console.log(height);
         if (window.self !== window.top){
-          const queryWindow = window.parent;
           const message = { type: "comments-height", h: height };
-          queryWindow.postMessage(message, window.location.origin);
+          parent.postMessage(message, window.location.origin);
           return;
         }
       }
