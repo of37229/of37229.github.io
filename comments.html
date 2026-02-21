@@ -397,12 +397,11 @@
         var body = document.body,
             html = document.documentElement;
         var height = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight );
-          //console.log(height);
-        if (window.self !== window.top){
-          const message = { type: "comments-height", h: height };
-          parent.postMessage(message, window.location.origin);
-          return;
-        }
+        //console.log(height);
+
+        const message = { type: "comments-height", h: height };
+        parent.postMessage(message, "*");
+        return;
       }
 
       // NEW SUBMISSION LISTENERS
